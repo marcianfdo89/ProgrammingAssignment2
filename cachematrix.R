@@ -1,15 +1,28 @@
-## Put comments here that give an overall description of what your
-## functions do
+makeCacheMatrix<- function (x=matrix){
+cache<-NULL  	## storing the cache value and initialize to NULL
+set <-function (matrix){ # creating the matrix in the working environment
+x<<-matrix
+cache<<-NULL
+}
+get<- function(){x}## Method the get the matrix and return matrix
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+setInverse<-function(inverse){ ## setting the invert matrix and storing in cache
+cache<<-inverse}
+getInverse<- function()## get the inverted matrix from cache
+{
+cache}
+##return the created functions to the working environment
+list(set=set, get=get, setInverse=setInverse, getInverse=getInverse)
 }
 
-
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-}
+##Compute the inverse of the unique matrix back by "makeCacheMatrix"
+cacheSolve <- function(x) {
+cache<-x$getInverse()## return inverted matrix from cache if it exists
+        	         ## else create the matrix in working environment
+if(!is.null(cache)){
+message("getting cache data")
+return(cache)}
+data<-x$get()##create matrix since it does not exist
+cache<-solve(data)## Compute the inverse 
+x$setInverse(cache)##Set the inverse to the cache
+cache}
